@@ -18,28 +18,36 @@
             line-height: 50px;
             color: black;
         }
+        a:visited  {color:black;}
+        a:active { color: red;}
         form {
             margin-top: 20px;
             margin-left: 30px;
             position: relative;
             height: 100px;
         }
+        .selput {
+            position: absolute;
+            width: 300px;
+            top: 0;
+            left: 26%;
+        }
         input {
             margin-top: 20px;
             position: absolute;
             top: 0;
-            left: 38%;
+            right: 0;
         }
         table {
             margin: 0 auto;
         }
         select {
-            width: 220px;
+            width: 220px !important;
             height: 30px;
             text-indent: 10px;
             position: absolute;
             top: 16px;
-            left: 23%;
+            left: 0;
         }
         .mecahrt div{
             margin: 0 auto;
@@ -56,6 +64,7 @@
 
     {% if mark == "line" %}
     <form method="POST" action="/line">
+        <div class="selput">
         <select style="width: 30px" name="the_region_selected">
             <option value="2016">2016年老年人人口抚养比</option>
             <option value="2017">2017年老年人人口抚养比</option>
@@ -64,39 +73,46 @@
             <option value="2018city">2018年城市老年人人口抚养比</option>
         </select>
         <p><input  class="btn" value='Do it!' type='SUBMIT'></p>
+        </div>
     </form>
     {% endif %}
 
      {% if mark == "bar" %}
     <form method="POST" action="/bar">
+        <div class="selput">
         <select name="the_region_selected">
             {% for item in the_select_region %}
             <option value="{{ item }}">{{ item }}</option>
             {% endfor %}
         </select>
         <p><input value='Do it!' type='SUBMIT'></p>
+        </div>
     </form>
     {% endif %}
 
     {% if mark == "map_oldMan" %}
     <form method="POST" action="/map/oldMan">
+        <div class="selput">
         <select name="the_year_selected">
             {% for item in the_select_year %}
             <option value="{{ item }}">{{ item }}</option>
             {% endfor %}
         </select>
         <p><input value='Do it!' type='SUBMIT'></p>
+        </div>
     </form>
     {% endif %}
 
     {% if mark == "map_citys" %}
     <form method="POST" action="/map/citys">
+        <div class="selput">
         <select name="the_year_selected">
             {% for item in the_select_year %}
             <option value="{{ item }}">{{ item }}</option>
             {% endfor %}
         </select>
         <p><input value='Do it!' type='SUBMIT'></p>
+        </div>
     </form>
     {% endif %}
     <div class="mecahrt">
