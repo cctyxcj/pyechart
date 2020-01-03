@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Proudly presented by ECharts</title>
+     <link rel="stylesheet" href="../static/css/element.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+
+<body>
+
+    <a href="/toMap/oldMan">老年人口地图</a>
+    <a href="/toMap/citys">城市化地图</a>
+    <a href="/toLine">折线图</a>
+    <a href="/toBar">柱状图</a>
+
+    {% if mark == "line" %}
+    <form method="POST" action="/line">
+        <select name="the_region_selected">
+            <option value="2016">2016年老年人人口抚养比</option>
+            <option value="2017">2017年老年人人口抚养比</option>
+            <option value="2018">2018年老年人人口抚养比</option>
+            <option value="2018urual">2018年农村老年人人口抚养比</option>
+            <option value="2018city">2018年城市老年人人口抚养比</option>
+        </select>
+        <p><input value='Do it!' type='SUBMIT'></p>
+    </form>
+    {% endif %}
+
+     {% if mark == "bar" %}
+    <form method="POST" action="/bar">
+        <select name="the_region_selected">
+            {% for item in the_select_region %}
+            <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+        <p><input value='Do it!' type='SUBMIT'></p>
+    </form>
+    {% endif %}
+
+    {% if mark == "map_oldMan" %}
+    <form method="POST" action="/map/oldMan">
+        <select name="the_year_selected">
+            {% for item in the_select_year %}
+            <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+        <p><input value='Do it!' type='SUBMIT'></p>
+    </form>
+    {% endif %}
+
+    {% if mark == "map_citys" %}
+    <form method="POST" action="/map/citys">
+        <select name="the_year_selected">
+            {% for item in the_select_year %}
+            <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+        <p><input value='Do it!' type='SUBMIT'></p>
+    </form>
+    {% endif %}
+
+
+    {{ myechart|safe }}
+
+    {{ the_res|safe }}
+    <script src="../static/js/vue-2.4.0.js"></script>
+     <script src="../static/js/element.js"></script>
+     <script src="../static/js/index.js"></script>
+</body>
+
+</html>
