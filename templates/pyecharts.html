@@ -4,8 +4,47 @@
 <head>
     <meta charset="utf-8">
     <title>Proudly presented by ECharts</title>
-     <link rel="stylesheet" href="../static/css/element.css">
-    <link rel="stylesheet" href="../static/css/index.css">
+    <style>
+        body {
+            text-align: center;
+        }
+        a {
+            text-decoration : none;
+            font-size: 30px;
+            text-align: center;
+            display: inline-block;
+            width: 184px;
+            height: 50px;
+            line-height: 50px;
+            color: black;
+        }
+        form {
+            margin-top: 20px;
+            margin-left: 30px;
+            position: relative;
+            height: 100px;
+        }
+        input {
+            margin-top: 20px;
+            position: absolute;
+            top: 0;
+            left: 38%;
+        }
+        table {
+            margin: 0 auto;
+        }
+        select {
+            width: 220px;
+            height: 30px;
+            text-indent: 10px;
+            position: absolute;
+            top: 16px;
+            left: 23%;
+        }
+        .mecahrt div{
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,14 +56,14 @@
 
     {% if mark == "line" %}
     <form method="POST" action="/line">
-        <select name="the_region_selected">
+        <select style="width: 30px" name="the_region_selected">
             <option value="2016">2016年老年人人口抚养比</option>
             <option value="2017">2017年老年人人口抚养比</option>
             <option value="2018">2018年老年人人口抚养比</option>
             <option value="2018urual">2018年农村老年人人口抚养比</option>
             <option value="2018city">2018年城市老年人人口抚养比</option>
         </select>
-        <p><input value='Do it!' type='SUBMIT'></p>
+        <p><input  class="btn" value='Do it!' type='SUBMIT'></p>
     </form>
     {% endif %}
 
@@ -60,14 +99,13 @@
         <p><input value='Do it!' type='SUBMIT'></p>
     </form>
     {% endif %}
-
-
+    <div class="mecahrt">
     {{ myechart|safe }}
-
+    </div>
+    <h2>
+    {{ bottom_title|safe }}
+    </h2>
     {{ the_res|safe }}
-    <script src="../static/js/vue-2.4.0.js"></script>
-     <script src="../static/js/element.js"></script>
-     <script src="../static/js/index.js"></script>
 </body>
 
 </html>

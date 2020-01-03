@@ -1,12 +1,9 @@
 from flask import Flask, render_template, request
 import pandas as pd
-from example.commons import Faker
 from pyecharts import options as opts
 from pyecharts.charts import Map, Line, Bar
 
 app = Flask(__name__)
-WIDTH = 1100
-HEIGHT = 550
 
 # 地图
 df_map = pd.read_csv('./csv/map.csv', encoding='GBK', delimiter=",")
@@ -57,6 +54,7 @@ def to_bar():
                            )
 
 
+# 柱状图
 @app.route('/bar', methods=['POST'])
 def bar_select() -> 'html':
     the_region = request.form["the_region_selected"]
@@ -66,7 +64,7 @@ def bar_select() -> 'html':
         Bar()
             .add_xaxis(dfs_bar['年'].tolist())
             .add_yaxis(the_region, dfs_bar['count'].tolist())
-            .set_global_opts(title_opts=opts.TitleOpts(title="Bar", subtitle="我是副标题"))
+            .set_global_opts(title_opts=opts.TitleOpts(title=the_region, subtitle=""))
     )
 
     c.render("./static/tmp/echarts_bar.html")
@@ -78,10 +76,12 @@ def bar_select() -> 'html':
                            myechart=plot_all,
                            the_res=data_str,
                            the_select_region=regions_available_bar,
+                           bottom_title="分析:柱状图",
                            mark="bar",
                            )
 
 
+# 折线图
 @app.route('/line', methods=['POST'])
 def line_select() -> 'html':
     d = {"2016": "2016年老年人人口抚养比",
@@ -91,26 +91,26 @@ def line_select() -> 'html':
          "2018city": "2018年城市老年人人口抚养比",
          }
     the_region = request.form["the_region_selected"]
-    # print(df_line['地区'].tolist())
     c = (
         Line()
             .add_xaxis(df_line['地区'].tolist())
             .add_yaxis(the_region, df_line[the_region])
-            .set_global_opts(title_opts=opts.TitleOpts(title=d[the_region]))
+            .set_global_opts(title_opts=opts.TitleOpts(title=d[the_region]),
+                             xaxis_opts=opts.AxisOpts(name="地区", axislabel_opts={"rotate": 45}))
     )
-
     c.render("./static/tmp/echarts_line.html")
     with open("./static/tmp/echarts_line.html", encoding="utf8", mode="r") as f:
         plot_all = "".join(f.readlines())
-
     data_str = df_line.to_html()
     return render_template('pyecharts.html',
                            myechart=plot_all,
                            the_res=data_str,
                            mark="line",
+                           bottom_title="分析:折线图",
                            )
 
 
+# 老年人口地图
 @app.route('/map/oldMan', methods=['POST'])
 def map_select() -> 'html':
     the_region = regions_available_map[0]
@@ -120,7 +120,7 @@ def map_select() -> 'html':
         Map()
             .add(series_name=the_region, data_pair=[list(z) for z in zip(dfs["地区"], dfs[the_year])], maptype="china")
             .set_global_opts(
-            title_opts=opts.TitleOpts(title=the_region),
+            title_opts=opts.TitleOpts(title=the_year + the_region),
             visualmap_opts=opts.VisualMapOpts(max_=10000),
         )
     )
@@ -133,9 +133,11 @@ def map_select() -> 'html':
                            mark="map_oldMan",
                            the_res=data_str,
                            the_select_year=["2018", "2017", "2016"],
+                           bottom_title="分析:地图_老年人",
                            )
 
 
+# 城市化地图
 @app.route('/map/citys', methods=['POST'])
 def map_select_citys() -> 'html':
     the_region = regions_available_map[1]
@@ -149,8 +151,8 @@ def map_select_citys() -> 'html':
         Map()
             .add(series_name=the_region, data_pair=[list(z) for z in zip(dfs["地区"], ndfs)], maptype="china")
             .set_global_opts(
-            title_opts=opts.TitleOpts(title=the_region),
-            visualmap_opts=opts.VisualMapOpts(max_=100),
+            title_opts=opts.TitleOpts(title=the_year + the_region),
+            visualmap_opts=opts.VisualMapOpts(min_=28, max_=90),
         )
     )
     chart.render("./static/tmp/echarts_map.html")
@@ -162,6 +164,7 @@ def map_select_citys() -> 'html':
                            mark="map_citys",
                            the_res=data_str,
                            the_select_year=["2018", "2017", "2016"],
+                           bottom_title="分析:地图_城市化",
                            )
 
 
